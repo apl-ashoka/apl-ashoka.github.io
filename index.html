@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>APL IX — Ashoka Premier League</title>
+  <meta name="description" content="Ashoka Premier League — 9th Edition. The biggest intra-university football tournament at Ashoka University." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #1a6b3c;
+      --green-light: #e8f5ee;
+      --green-mid: #2d9b5a;
+      --gold: #d4a017;
+      --gold-light: #fdf6e3;
+      --pitch: #0f3d22;
+      --white: #ffffff;
+      --off: #f9f8f5;
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+      --border: rgba(0,0,0,0.08);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--off);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--pitch);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 2px;
+      transition: all 0.2s;
+    }
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      background: var(--pitch);
+      padding: 1rem 2rem 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--pitch);
+      color: white;
+      padding: 5rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.03) 39px, rgba(255,255,255,0.03) 40px);
+    }
+    .hero-inner { max-width: 900px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-edition {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--pitch);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(56px, 10vw, 120px);
+      line-height: 0.9;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.65);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 3rem;
+      flex-wrap: wrap;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .hero-stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 4rem 2rem; }
+    .section-inner { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--green-mid);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(28px, 5vw, 48px);
+      letter-spacing: 1px;
+      margin-bottom: 2rem;
+      color: var(--ink);
+    }
+    .divider { height: 1px; background: var(--border); margin: 0 2rem; }
+
+    /* ── ABOUT ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+    .about-text p { color: var(--muted); font-size: 15px; line-height: 1.8; margin-bottom: 1rem; }
+    .about-text p:last-child { margin-bottom: 0; }
+    .values-list { display: flex; flex-direction: column; gap: 12px; }
+    .value-item {
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .value-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green-mid);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+    .value-title { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+    .value-desc { font-size: 13px; color: var(--muted); }
+
+    /* ── FIXTURES ── */
+    .fixtures-tabs { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab-btn {
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--ink);
+    }
+    .tab-btn.active { background: var(--pitch); color: white; border-color: var(--pitch); }
+    .tab-btn:hover:not(.active) { background: var(--green-light); border-color: var(--green-mid); }
+    .fixture-card {
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 1rem;
+    }
+    .team-name { font-size: 14px; font-weight: 500; }
+    .team-name.right { text-align: right; }
+    .score-box {
+      text-align: center;
+      background: var(--off);
+      border-radius: 6px;
+      padding: 6px 14px;
+      min-width: 64px;
+    }
+    .score-val { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 1px; color: var(--ink); }
+    .score-time { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .fixture-meta { font-size: 12px; color: var(--muted); text-align: center; margin-top: 6px; }
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 3px;
+    }
+    .badge-live { background: #fdecea; color: #c0392b; }
+    .badge-done { background: #eaf5ee; color: #1a6b3c; }
+    .badge-up { background: #fdf6e3; color: #b7860b; }
+
+    /* ── STANDINGS ── */
+    .standings-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .standings-table th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+    }
+    .standings-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--border); vertical-align: middle; }
+    .standings-table tr:last-child td { border-bottom: none; }
+    .standings-table tbody tr:hover td { background: var(--off); }
+    .rank-num { font-family: 'Bebas Neue', sans-serif; font-size: 18px; color: var(--muted); }
+    .rank-num.top { color: var(--green-mid); }
+    .pts { font-weight: 500; color: var(--ink); }
+    .form-dots { display: flex; gap: 4px; }
+    .form-dot {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      font-size: 9px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+    .fd-w { background: var(--green-mid); }
+    .fd-d { background: #888; }
+    .fd-l { background: #c0392b; }
+
+    /* ── TEAMS ── */
+    .teams-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+    .team-card {
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      transition: all 0.15s;
+    }
+    .team-card:hover { border-color: var(--green-mid); background: var(--green-light); }
+    .team-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 16px;
+      color: white;
+    }
+    .team-card-name { font-size: 13px; font-weight: 500; color: var(--ink); }
+    .team-card-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+    /* ── OC ── */
+    .oc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .oc-card {
+      background: var(--white);
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.25rem;
+    }
+    .oc-role { font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; color: var(--green-mid); margin-bottom: 8px; }
+    .oc-name { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
+    .oc-dept { font-size: 12px; color: var(--muted); }
+
+    /* ── REGISTER ── */
+    .register-box {
+      background: var(--pitch);
+      border-radius: 16px;
+      padding: 3rem;
+      color: white;
+      text-align: center;
+    }
+    .register-box h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+    .register-box p {
+      color: rgba(255,255,255,0.6);
+      font-size: 15px;
+      margin-bottom: 2rem;
+      max-width: 420px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .reg-info { display: flex; justify-content: center; gap: 2.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .reg-info-item { text-align: center; }
+    .reg-info-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); }
+    .reg-info-label { font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.5px; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: var(--pitch);
+      border: none;
+      border-radius: 8px;
+      padding: 14px 36px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .cta-btn:hover { opacity: 0.9; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--pitch);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2rem;
+      font-size: 13px;
+    }
+    footer strong { color: var(--gold); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .about-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+      .fixture-card { grid-template-columns: 1fr auto 1fr; gap: 8px; }
+      .team-name { font-size: 12px; }
+      .standings-table th:nth-child(4),
+      .standings-table td:nth-child(4),
+      .standings-table th:nth-child(5),
+      .standings-table td:nth-child(5),
+      .standings-table th:nth-child(9),
+      .standings-table td:nth-child(9) { display: none; }
+      .register-box { padding: 2rem 1.5rem; }
+      .reg-info { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">APL IX</a>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#fixtures">Fixtures</a>
+    <a href="#standings">Table</a>
+    <a href="#teams">Teams</a>
+    <a href="#oc">OC</a>
+    <a href="#register">Register</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#fixtures" onclick="closeMobile()">Fixtures</a>
+  <a href="#standings" onclick="closeMobile()">Table</a>
+  <a href="#teams" onclick="closeMobile()">Teams</a>
+  <a href="#oc" onclick="closeMobile()">OC</a>
+  <a href="#register" onclick="closeMobile()">Register</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-edition">9th Edition · Spring 2025 · Ashoka University</div>
+    <h1>ASHOKA<br><span>PREMIER</span><br>LEAGUE</h1>
+    <p class="hero-sub">The biggest intra-university football tournament on campus. 3 days. 20+ teams. One champion.</p>
+    <div class="hero-stats">
+      <div><div class="hero-stat-val">20+</div><div class="hero-stat-label">Teams</div></div>
+      <div><div class="hero-stat-val">3</div><div class="hero-stat-label">Days</div></div>
+      <div><div class="hero-stat-val">9th</div><div class="hero-stat-label">Edition</div></div>
+      <div><div class="hero-stat-val">Mixed</div><div class="hero-stat-label">Gender</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about" style="background: var(--white);">
+  <div class="section-inner">
+    <div class="section-label">About</div>
+    <div class="section-title">The Tournament</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>APL is Ashoka University's annual intra-college football tournament — three days of competitive, mixed-gender football bringing together undergraduate and postgraduate students every Spring Semester.</p>
+        <p>Now in its 9th edition, APL has grown into more than a tournament. It's where campus community meets sporting spirit — with group stages, knockouts, live commentary, and a whole lot of pitch-side energy.</p>
+        <p>Whether you play, watch, or cheer from the stands, APL is for everyone who loves the game.</p>
+      </div>
+      <div class="values-list">
+        <div class="value-item"><div class="value-dot"></div><div><div class="value-title">Inclusive by design</div><div class="value-desc">Mixed-gender teams, open to all skill levels and identities</div></div></div>
+        <div class="value-item"><div class="value-dot"></div><div><div class="value-title">Student-led</div><div class="value-desc">Planned and executed entirely by the Organizing Committee</div></div></div>
+        <div class="value-item"><div class="value-dot"></div><div><div class="value-title">Safe &amp; fair</div><div class="value-desc">Zero tolerance for discrimination and unsportsmanlike conduct</div></div></div>
+        <div class="value-item"><div class="value-dot"></div><div><div class="value-title">Live-streamed</div><div class="value-desc">YouTube coverage with student commentary throughout</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FIXTURES -->
+<section id="fixtures">
+  <div class="section-inner">
+    <div class="section-label">Schedule</div>
+    <div class="section-title">Fixtures</div>
+    <div class="fixtures-tabs">
+      <button class="tab-btn active" onclick="showDay(1, this)">Day 1 — Fri</button>
+      <button class="tab-btn" onclick="showDay(2, this)">Day 2 — Sat</button>
+      <button class="tab-btn" onclick="showDay(3, this)">Day 3 — Sun</button>
+    </div>
+    <div id="fixtures-list"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STANDINGS -->
+<section id="standings" style="background: var(--white);">
+  <div class="section-inner">
+    <div class="section-label">Group Stage</div>
+    <div class="section-title">Standings</div>
+    <div style="overflow-x: auto;">
+      <table class="standings-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>P</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GD</th>
+            <th>Pts</th>
+            <th>Form</th>
+          </tr>
+        </thead>
+        <tbody id="standings-body"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TEAMS -->
+<section id="teams">
+  <div class="section-inner">
+    <div class="section-label">Participants</div>
+    <div class="section-title">Teams</div>
+    <div class="teams-grid" id="teams-grid"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- OC -->
+<section id="oc" style="background: var(--white);">
+  <div class="section-inner">
+    <div class="section-label">Organizing Committee</div>
+    <div class="section-title">The OC</div>
+    <div class="oc-grid" id="oc-grid"></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- REGISTER -->
+<section id="register">
+  <div class="section-inner">
+    <div class="register-box">
+      <h2>PLAY APL IX</h2>
+      <p>Open to all currently enrolled Ashoka students. Register your team or sign up as a free agent for the player draft.</p>
+      <div class="reg-info">
+        <div class="reg-info-item"><div class="reg-info-val">₹100–200</div><div class="reg-info-label">Per player</div></div>
+        <div class="reg-info-item"><div class="reg-info-val">₹4–5K</div><div class="reg-info-label">Team buyout</div></div>
+        <div class="reg-info-item"><div class="reg-info-val">Open</div><div class="reg-info-label">All genders</div></div>
+      </div>
+      <!-- Replace href with your actual Google Form or registration link -->
+      <a class="cta-btn" href="#" target="_blank" rel="noopener">Register Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>APL IX</strong> · Ashoka Premier League · Ashoka University · Spring 2025<br>
+  <span style="font-size: 12px; margin-top: 6px; display: block;">Organized by the APL Organizing Committee · apl@ashoka.edu.in</span>
+</footer>
+
+<script>
+  /* ── MOBILE MENU ── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+  hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  function closeMobile() { mobileMenu.classList.remove('open'); }
+
+  /* ── DATA: edit these to match real teams ── */
+  const teams = [
+    { name: 'FC Ashoka',       abbr: 'FCA', color: '#1a6b3c' },
+    { name: 'The Dribblers',   abbr: 'TDR', color: '#2563eb' },
+    { name: 'Pitch Perfect',   abbr: 'PPF', color: '#7c3aed' },
+    { name: 'Goal Diggers',    abbr: 'GDG', color: '#dc2626' },
+    { name: 'Nutmeg FC',       abbr: 'NMG', color: '#d97706' },
+    { name: 'Off Sides',       abbr: 'OFS', color: '#0891b2' },
+    { name: 'The Headers',     abbr: 'THD', color: '#16a34a' },
+    { name: 'Samba Squad',     abbr: 'SSQ', color: '#ea580c' },
+    { name: 'Hattrick Heroes', abbr: 'HHR', color: '#9333ea' },
+    { name: 'Bootleggers',     abbr: 'BTL', color: '#be185d' },
+    { name: 'Yellow Cards',    abbr: 'YLC', color: '#ca8a04' },
+    { name: 'Free Kick FC',    abbr: 'FKF', color: '#0f766e' },
+  ];
+
+  const teamsGrid = document.getElementById('teams-grid');
+  teams.forEach(t => {
+    teamsGrid.innerHTML += `
+      <div class="team-card">
+        <div class="team-icon" style="background:${t.color}">${t.abbr}</div>
+        <div class="team-card-name">${t.name}</div>
+        <div class="team-card-meta">APL IX</div>
+      </div>`;
+  });
+
+  /* ── DATA: edit standings ── */
+  const standings = [
+    { rank:1, team:'FC Ashoka',       p:4, w:3, d:1, l:0, gd:7,  pts:10, form:['W','W','D','W'] },
+    { rank:2, team:'The Dribblers',   p:4, w:3, d:0, l:1, gd:5,  pts:9,  form:['W','W','L','W'] },
+    { rank:3, team:'Goal Diggers',    p:4, w:2, d:1, l:1, gd:2,  pts:7,  form:['W','D','W','L'] },
+    { rank:4, team:'Pitch Perfect',   p:4, w:2, d:0, l:2, gd:0,  pts:6,  form:['W','L','W','L'] },
+    { rank:5, team:'Samba Squad',     p:4, w:1, d:2, l:1, gd:-1, pts:5,  form:['D','W','D','L'] },
+    { rank:6, team:'Nutmeg FC',       p:4, w:1, d:1, l:2, gd:-3, pts:4,  form:['L','W','D','L'] },
+    { rank:7, team:'The Headers',     p:4, w:1, d:0, l:3, gd:-5, pts:3,  form:['L','L','W','L'] },
+    { rank:8, team:'Bootleggers',     p:4, w:0, d:1, l:3, gd:-5, pts:1,  form:['L','D','L','L'] },
+  ];
+  const sb = document.getElementById('standings-body');
+  standings.forEach(s => {
+    const formHtml = s.form.map(f => `<div class="form-dot fd-${f.toLowerCase()}">${f}</div>`).join('');
+    const gdColor = s.gd > 0 ? 'color:#1a6b3c' : s.gd < 0 ? 'color:#c0392b' : 'color:var(--muted)';
+    sb.innerHTML += `
+      <tr>
+        <td><span class="rank-num${s.rank <= 3 ? ' top' : ''}">${s.rank}</span></td>
+        <td style="font-weight:500">${s.team}</td>
+        <td style="color:var(--muted)">${s.p}</td>
+        <td>${s.w}</td><td>${s.d}</td><td>${s.l}</td>
+        <td style="${gdColor}">${s.gd > 0 ? '+' : ''}${s.gd}</td>
+        <td><span class="pts">${s.pts}</span></td>
+        <td><div class="form-dots">${formHtml}</div></td>
+      </tr>`;
+  });
+
+  /* ── DATA: edit fixtures ── */
+  const fixtures = {
+    1: [
+      { home:'FC Ashoka',       away:'Bootleggers',     score:'3–0', time:'9:00 AM',  status:'done' },
+      { home:'The Dribblers',   away:'The Headers',     score:'2–1', time:'10:00 AM', status:'done' },
+      { home:'Goal Diggers',    away:'Nutmeg FC',       score:'1–1', time:'11:00 AM', status:'done' },
+      { home:'Samba Squad',     away:'Pitch Perfect',   score:'0–2', time:'12:00 PM', status:'done' },
+      { home:'Hattrick Heroes', away:'Yellow Cards',    score:'—',   time:'2:00 PM',  status:'upcoming' },
+    ],
+    2: [
+      { home:'FC Ashoka',    away:'Pitch Perfect',  score:'2–1', time:'9:00 AM',  status:'done' },
+      { home:'Goal Diggers', away:'The Headers',    score:'2–0', time:'10:00 AM', status:'done' },
+      { home:'Nutmeg FC',    away:'Samba Squad',    score:'1–2', time:'11:00 AM', status:'done' },
+      { home:'The Dribblers',away:'Bootleggers',    score:'—',   time:'12:00 PM', status:'live' },
+      { home:'Free Kick FC', away:'Off Sides',      score:'—',   time:'2:30 PM',  status:'upcoming' },
+    ],
+    3: [
+      { home:'QF 1',        away:'QF 2',        score:'—', time:'9:00 AM',  status:'upcoming' },
+      { home:'QF 3',        away:'QF 4',        score:'—', time:'10:30 AM', status:'upcoming' },
+      { home:'3rd Place',   away:'3rd Place',   score:'—', time:'12:30 PM', status:'upcoming' },
+      { home:'Winner SF1',  away:'Winner SF2',  score:'—', time:'2:30 PM',  status:'upcoming' },
+    ],
+  };
+
+  let currentDay = 1;
+  function showDay(d, btn) {
+    currentDay = d;
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderFixtures();
+  }
+  function renderFixtures() {
+    const fl = document.getElementById('fixtures-list');
+    fl.innerHTML = '';
+    fixtures[currentDay].forEach(f => {
+      const badgeClass = f.status === 'live' ? 'badge-live' : f.status === 'done' ? 'badge-done' : 'badge-up';
+      const badgeText  = f.status === 'live' ? 'LIVE' : f.status === 'done' ? 'FT' : 'Upcoming';
+      fl.innerHTML += `
+        <div class="fixture-card">
+          <div class="team-name">${f.home}</div>
+          <div>
+            <div class="score-box">
+              <div class="score-val">${f.score}</div>
+              <div class="score-time">${f.time}</div>
+            </div>
+            <div class="fixture-meta"><span class="badge ${badgeClass}">${badgeText}</span></div>
+          </div>
+          <div class="team-name right">${f.away}</div>
+        </div>`;
+    });
+  }
+  renderFixtures();
+
+  /* ── DATA: edit OC names ── */
+  const oc = [
+    { role:'Tournament Director',    name:'Your Name Here', dept:'Leadership' },
+    { role:'Tournament Director',    name:'Your Name Here', dept:'Leadership' },
+    { role:'Operations & Logistics', name:'Your Name Here', dept:'Ops' },
+    { role:'Operations & Logistics', name:'Your Name Here', dept:'Ops' },
+    { role:'Finance & Sponsorship',  name:'Your Name Here', dept:'Finance' },
+    { role:'Finance & Sponsorship',  name:'Your Name Here', dept:'Finance' },
+    { role:'Media & Promotions',     name:'Your Name Here', dept:'Media' },
+    { role:'Media & Promotions',     name:'Your Name Here', dept:'Media' },
+    { role:'Umpiring & Technical',   name:'Your Name Here', dept:'Technical' },
+    { role:'Umpiring & Technical',   name:'Your Name Here', dept:'Technical' },
+    { role:'Player Welfare',         name:'Your Name Here', dept:'Welfare' },
+    { role:'Player Welfare',         name:'Your Name Here', dept:'Welfare' },
+  ];
+  const og = document.getElementById('oc-grid');
+  oc.forEach(o => {
+    og.innerHTML += `
+      <div class="oc-card">
+        <div class="oc-role">${o.role}</div>
+        <div class="oc-name">${o.name}</div>
+        <div class="oc-dept">${o.dept}</div>
+      </div>`;
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>The OC — APL IX</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<nav class="masthead">
+  <div class="masthead-inner">
+    <a class="masthead-logo" href="index.html">APL <span>IX</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fixtures.html">Fixtures</a></li>
+      <li><a href="standings.html">Standings</a></li>
+      <li><a href="teams.html">Teams</a></li>
+      <li><a href="oc.html" class="active">The OC</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Home</a><a href="fixtures.html">Fixtures</a>
+    <a href="standings.html">Standings</a><a href="teams.html">Teams</a><a href="oc.html">The OC</a>
+  </div>
+</nav>
+<div class="page">
+  <div class="section-label">Organising Committee</div>
+  <div class="section-title">The OC</div>
+  <p style="color:var(--muted);font-size:15px;max-width:600px;margin-bottom:2rem;line-height:1.8;">APL IX is made possible by twelve core committee members and a wider team of student volunteers. Every fixture, every match, every post — that's them.</p>
+  <div id="oc-grid" class="oc-grid"><div class="state-msg" style="grid-column:1/-1"><div class="spinner"></div>Loading…</div></div>
+  <div style="text-align:center;margin-top:2.5rem;padding-top:2rem;border-top:0.5px solid var(--border);">
+    <p style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:0.5rem;">Get in touch</p>
+    <a href="mailto:apl@ashoka.edu.in" style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1px;color:var(--green);text-decoration:none;">apl@ashoka.edu.in</a>
+  </div>
+</div>
+<footer><strong>APL IX</strong> · Ashoka Premier League · Ashoka University · Spring 2025<br><span style="display:block;margin-top:6px;opacity:0.6;">Organised by the APL Organizing Committee · apl@ashoka.edu.in</span></footer>
+<script src="supabase.js"></script>
+<script>
+  document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+  async function loadOC(){
+    const grid=document.getElementById('oc-grid');
+    try{
+      const members=await sb.from('oc_members','?select=*&order=role.asc,name.asc');
+      if(!members.length){grid.innerHTML='<div class="state-msg" style="grid-column:1/-1">No members added yet.</div>';return;}
+      grid.innerHTML=members.map(m=>`
+        <div class="oc-card">
+          <div class="oc-role">${m.role}</div>
+          <div class="oc-name">${m.name}</div>
+          <div class="oc-dept">${m.department}</div>
+        </div>`).join('');
+    }catch(e){
+      grid.innerHTML='<div class="state-msg" style="grid-column:1/-1">Could not load OC members.</div>';
+    }
+  }
+  loadOC();
+</script>
+</body>
+</html>

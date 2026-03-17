@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Standings — APL IX</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<nav class="masthead">
+  <div class="masthead-inner">
+    <a class="masthead-logo" href="index.html">APL <span>IX</span></a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="fixtures.html">Fixtures</a></li>
+      <li><a href="standings.html" class="active">Standings</a></li>
+      <li><a href="teams.html">Teams</a></li>
+      <li><a href="oc.html">The OC</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="index.html">Home</a><a href="fixtures.html">Fixtures</a>
+    <a href="standings.html">Standings</a><a href="teams.html">Teams</a><a href="oc.html">The OC</a>
+  </div>
+</nav>
+<div class="page">
+  <div class="section-label">Group Stage</div>
+  <div class="section-title">Standings</div>
+  <div id="standings-wrap"><div class="state-msg"><div class="spinner"></div>Loading standings…</div></div>
+  <div style="display:flex;gap:1.5rem;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:1rem;">
+    <span style="display:flex;align-items:center;gap:6px;"><span class="form-dot fd-w" style="font-size:9px;">W</span> Win</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span class="form-dot fd-d" style="font-size:9px;">D</span> Draw</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span class="form-dot fd-l" style="font-size:9px;">L</span> Loss</span>
+    <span style="margin-left:auto;">Top 4 advance to knockout stage</span>
+  </div>
+</div>
+<footer><strong>APL IX</strong> · Ashoka Premier League · Ashoka University · Spring 2025<br><span style="display:block;margin-top:6px;opacity:0.6;">Organised by the APL Organizing Committee · apl@ashoka.edu.in</span></footer>
+<script src="supabase.js"></script>
+<script>
+  document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+  async function loadStandings(){
+    const wrap=document.getElementById('standings-wrap');
+    try{
+      const rows=await sb.from('standings','?select=*&order=pts.desc,gd.desc');
+      if(!rows.length){wrap.innerHTML='<div class="state-msg">No standings data yet.</div>';return;}
+      wrap.innerHTML=`<div class="standings-wrap"><table class="standings-table">
+        <thead><tr><th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GD</th><th>Pts</th><th>Form</th></tr></thead>
+        <tbody>${rows.map((s,i)=>{
+          const form=(s.form||[]).slice(-5);
+          const formHtml=form.map(f=>`<span class="form-dot fd-${f.toLowerCase()}">${f}</span>`).join('');
+          const gd=s.gd>0?`+${s.gd}`:s.gd;
+          const gdColor=s.gd>0?'var(--green)':s.gd<0?'var(--red)':'var(--muted)';
+          return `<tr>
+            <td><span class="rank-num${i<3?' top':''}">${i+1}</span></td>
+            <td style="font-weight:500">${s.team_name}</td>
+            <td style="color:var(--muted)">${s.played}</td>
+            <td>${s.won}</td><td>${s.drawn}</td><td>${s.lost}</td>
+            <td style="color:${gdColor};font-weight:500">${gd}</td>
+            <td><span class="pts-cell">${s.pts}</span></td>
+            <td><div class="form-dots">${formHtml}</div></td>
+          </tr>`;
+        }).join('')}</tbody>
+      </table></div>`;
+    }catch(e){
+      wrap.innerHTML='<div class="state-msg">Could not load standings.</div>';
+    }
+  }
+  loadStandings();
+</script>
+</body>
+</html>

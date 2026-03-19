@@ -375,6 +375,21 @@
       transition: opacity 0.15s;
     }
     .cta-btn:hover { opacity: 0.9; }
+    .cta-btn.secondary {
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid rgba(212,160,23,0.7);
+    }
+    .cta-btn.secondary:hover {
+      background: rgba(212,160,23,0.12);
+      opacity: 1;
+    }
+    .reg-cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
 
     /* ── FOOTER ── */
     footer {
@@ -385,6 +400,25 @@
       font-size: 13px;
     }
     footer strong { color: var(--gold); }
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+    footer a:hover { text-decoration: underline; }
+    .footer-heart {
+      display: inline-block;
+      color: #ff5c5c;
+      animation: heart-beat 1s ease-in-out infinite;
+      transform-origin: center;
+      margin: 0 3px;
+    }
+    @keyframes heart-beat {
+      0%, 100% { transform: scale(1); }
+      15% { transform: scale(1.2); }
+      30% { transform: scale(1); }
+      45% { transform: scale(1.2); }
+      60% { transform: scale(1); }
+    }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 700px) {
@@ -402,6 +436,8 @@
       .standings-table td:nth-child(9) { display: none; }
       .register-box { padding: 2rem 1.5rem; }
       .reg-info { gap: 1.5rem; }
+      .reg-cta-row { flex-direction: column; }
+      .reg-cta-row .cta-btn { width: 100%; max-width: 260px; margin: 0 auto; }
     }
   </style>
 </head>
@@ -546,16 +582,20 @@
         <div class="reg-info-item"><div class="reg-info-val">₹4–5K</div><div class="reg-info-label">Team buyout</div></div>
         <div class="reg-info-item"><div class="reg-info-val">Open</div><div class="reg-info-label">All genders</div></div>
       </div>
-      <!-- Replace href with your actual Google Form or registration link -->
-      <a class="cta-btn" href="#" target="_blank" rel="noopener">Register Now</a>
+      <!-- Replace href values with your actual Google Form links -->
+      <div class="reg-cta-row">
+        <a class="cta-btn" href="#" target="_blank" rel="noopener">Register Now</a>
+        <a class="cta-btn secondary" href="#" target="_blank" rel="noopener">Inductions Form</a>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <strong>APL IX</strong> · Ashoka Premier League · Ashoka University · Spring 2025<br>
+  <strong>APL IX</strong> · Ashoka Premier League · Ashoka University<br>
   <span style="font-size: 12px; margin-top: 6px; display: block;">Organized by the APL Organizing Committee · apl@ashoka.edu.in</span>
+  <span style="font-size: 12px; margin-top: 6px; display: block;">Built with <span class="footer-heart" aria-hidden="true">&#10084;</span> by <a href="https://github.com/28nitin07" target="_blank" rel="noopener">Nitin S</a></span>
 </footer>
 
 <script>

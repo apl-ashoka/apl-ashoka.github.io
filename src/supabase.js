@@ -6,10 +6,11 @@ const SUPABASE_ANON = 'sb_publishable_uF5S1z-SR5-rRt3AVCliGA_RDug3t9j';
 const sb = {
   /* generic SELECT */
   async from(table, query = '') {
+    const token = sb._token();
     const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`, {
       headers: {
         apikey: SUPABASE_ANON,
-        Authorization: `Bearer ${sb._token() || SUPABASE_ANON}`,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
         'Content-Type': 'application/json',
       },
     });

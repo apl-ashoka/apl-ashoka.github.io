@@ -257,70 +257,19 @@
     return r.json();
   }
 
-  /* ── FALLBACK DATA ── */
-  const FALLBACK_TEAMS=[
-    {name:'FC Ashoka',abbr:'FCA',color:'#1a6b3c'},{name:'The Dribblers',abbr:'TDR',color:'#2563eb'},
-    {name:'Pitch Perfect',abbr:'PPF',color:'#7c3aed'},{name:'Goal Diggers',abbr:'GDG',color:'#dc2626'},
-    {name:'Nutmeg FC',abbr:'NMG',color:'#d97706'},{name:'Off Sides',abbr:'OFS',color:'#0891b2'},
-    {name:'The Headers',abbr:'THD',color:'#16a34a'},{name:'Samba Squad',abbr:'SSQ',color:'#ea580c'},
-    {name:'Hattrick Heroes',abbr:'HHR',color:'#9333ea'},{name:'Bootleggers',abbr:'BTL',color:'#be185d'},
-    {name:'Yellow Cards',abbr:'YLC',color:'#ca8a04'},{name:'Free Kick FC',abbr:'FKF',color:'#0f766e'},
-  ];
-  const FALLBACK_STANDINGS=[
-    {rank:1,team:'FC Ashoka',p:4,w:3,d:1,l:0,gd:7,pts:10,form:['W','W','D','W']},
-    {rank:2,team:'The Dribblers',p:4,w:3,d:0,l:1,gd:5,pts:9,form:['W','W','L','W']},
-    {rank:3,team:'Goal Diggers',p:4,w:2,d:1,l:1,gd:2,pts:7,form:['W','D','W','L']},
-    {rank:4,team:'Pitch Perfect',p:4,w:2,d:0,l:2,gd:0,pts:6,form:['W','L','W','L']},
-    {rank:5,team:'Samba Squad',p:4,w:1,d:2,l:1,gd:-1,pts:5,form:['D','W','D','L']},
-    {rank:6,team:'Nutmeg FC',p:4,w:1,d:1,l:2,gd:-3,pts:4,form:['L','W','D','L']},
-    {rank:7,team:'The Headers',p:4,w:1,d:0,l:3,gd:-5,pts:3,form:['L','L','W','L']},
-    {rank:8,team:'Bootleggers',p:4,w:0,d:1,l:3,gd:-5,pts:1,form:['L','D','L','L']},
-  ];
-  const FALLBACK_FIXTURES={
-    1:[
-      {home:'FC Ashoka',away:'Bootleggers',score:'3-0',time:'9:00 AM',status:'done'},
-      {home:'The Dribblers',away:'The Headers',score:'2-1',time:'10:00 AM',status:'done'},
-      {home:'Goal Diggers',away:'Nutmeg FC',score:'1-1',time:'11:00 AM',status:'done'},
-      {home:'Samba Squad',away:'Pitch Perfect',score:'0-2',time:'12:00 PM',status:'done'},
-      {home:'Hattrick Heroes',away:'Yellow Cards',score:'—',time:'2:00 PM',status:'upcoming'},
-    ],
-    2:[
-      {home:'FC Ashoka',away:'Pitch Perfect',score:'2-1',time:'9:00 AM',status:'done'},
-      {home:'Goal Diggers',away:'The Headers',score:'2-0',time:'10:00 AM',status:'done'},
-      {home:'Nutmeg FC',away:'Samba Squad',score:'1-2',time:'11:00 AM',status:'done'},
-      {home:'The Dribblers',away:'Bootleggers',score:'—',time:'12:00 PM',status:'live'},
-      {home:'Free Kick FC',away:'Off Sides',score:'—',time:'2:30 PM',status:'upcoming'},
-    ],
-    3:[
-      {home:'QF 1',away:'QF 2',score:'—',time:'9:00 AM',status:'upcoming'},
-      {home:'QF 3',away:'QF 4',score:'—',time:'10:30 AM',status:'upcoming'},
-      {home:'3rd Place',away:'3rd Place',score:'—',time:'12:30 PM',status:'upcoming'},
-      {home:'Winner SF1',away:'Winner SF2',score:'—',time:'2:30 PM',status:'upcoming'},
-    ],
-  };
-  const FALLBACK_OC=[
-    {role:'Director',name:'Pradyumna Subhir',dept:'Leadership'},
-    {role:'Director',name:'Khwaish Surana',dept:'Leadership'},
-    {role:'Scoring and Tech',name:'Nitin S',dept:'Technical'},
-    {role:'Scoring and Tech',name:'Sahana Vijay',dept:'Technical'},
-    {role:'Inclusivity and Player Welfare',name:'Ranabeer Chhabra',dept:'Welfare'},
-    {role:'Inclusivity and Player Welfare',name:'Kian Nayar',dept:'Welfare'},
-    {role:'Finance and Sponsorships',name:'Tejas Singh',dept:'Finance'},
-    {role:'Operations and Logistics',name:'Dheer Jhaveri',dept:'Operations'},
-    {role:'Operations and Logistics',name:'Abhimanyu Chatterjee',dept:'Operations'},
-    {role:'Media, Marketing and Design',name:'Zehra Ladak',dept:'Media'},
-    {role:'Media, Marketing and Design',name:'Dharani Isser',dept:'Media'},
-  ];
+
 
   /* ── RENDER TEAMS ── */
   function renderTeams(data){
     const g=document.getElementById('teams-grid'); g.innerHTML='';
+    if(!data.length){g.innerHTML='<p style="color:var(--muted);font-size:14px;">Teams will be announced soon.</p>';return;}
     data.forEach(t=>{g.innerHTML+=`<div class="team-card"><div class="team-icon" style="background:${t.color}">${t.abbr}</div><div class="team-card-name">${t.name}</div><div class="team-card-meta">APL IX</div></div>`;});
   }
 
   /* ── RENDER STANDINGS ── */
   function renderStandings(data){
     const tb=document.getElementById('standings-body'); tb.innerHTML='';
+    if(!data.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:2rem;color:var(--muted);">Standings will appear once matches are played.</td></tr>';return;}
     data.forEach((s,i)=>{
       const rank=s.rank??i+1, team=s.team??s.team_name, p=s.p??s.played, w=s.w??s.won, d=s.d??s.drawn, l=s.l??s.lost;
       const form=(s.form||[]).slice(-5);
@@ -331,11 +280,11 @@
   }
 
   /* ── RENDER FIXTURES ── */
-  let allFixtures=null, currentDay=1;
+  let allFixtures={1:[],2:[],3:[]}, currentDay=1;
   function renderFixtures(){
     const fl=document.getElementById('fixtures-list'); fl.innerHTML='';
-    const src=allFixtures!==null?allFixtures.filter(f=>f.day===currentDay):(FALLBACK_FIXTURES[currentDay]||[]);
-    if(!src.length){fl.innerHTML='<p style="color:var(--muted);font-size:14px;padding:0.5rem 0">No fixtures for this day yet.</p>';return;}
+    const src=(allFixtures[currentDay]||[]);
+    if(!src.length){fl.innerHTML='<p style="color:var(--muted);font-size:14px;padding:0.5rem 0">No fixtures scheduled for this day yet.</p>';return;}
     src.forEach(f=>{
       const home=f.home??f.home_team, away=f.away??f.away_team, time=f.time??f.match_time;
       const score=f.score??((f.status==='done'||f.status==='live')?`${f.home_score??0}-${f.away_score??0}`:'—');
@@ -349,6 +298,7 @@
   /* ── RENDER OC ── */
   function renderOC(data){
     const g=document.getElementById('oc-grid'); g.innerHTML='';
+    if(!data.length){g.innerHTML='<p style="color:var(--muted);font-size:14px;">OC details coming soon.</p>';return;}
     data.forEach(o=>{const dept=o.dept??o.department??'';g.innerHTML+=`<div class="oc-card"><div class="oc-role">${o.role}</div><div class="oc-name">${o.name}</div><div class="oc-dept">${dept}</div></div>`;});
   }
 
@@ -356,16 +306,19 @@
   document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
   function closeMobile(){document.getElementById('mobile-menu').classList.remove('open');}
 
-  /* ── FETCH + FALLBACK ── */
-  async function loadFixtures(){try{const d=await sbFrom('fixtures','?select=*&order=match_time.asc');allFixtures=d.length?d:null;}catch(e){allFixtures=null;}renderFixtures();}
-  async function loadStandings(){try{const d=await sbFrom('standings','?select=*&order=pts.desc,gd.desc');renderStandings(d.length?d:FALLBACK_STANDINGS);}catch(e){renderStandings(FALLBACK_STANDINGS);}}
-  async function loadTeams(){try{const d=await sbFrom('teams','?select=*&order=name.asc');renderTeams(d.length?d:FALLBACK_TEAMS);}catch(e){renderTeams(FALLBACK_TEAMS);}}
-  async function loadOC(){try{const d=await sbFrom('oc_members','?select=*&order=role.asc,name.asc');renderOC(d.length?d:FALLBACK_OC);}catch(e){renderOC(FALLBACK_OC);}}
+  /* ── FETCH FROM SUPABASE ── */
+  async function loadFixtures(){
+    try{const d=await sbFrom('fixtures','?select=*&order=match_time.asc');const out={1:[],2:[],3:[]};d.forEach(f=>{if(out[f.day])out[f.day].push(f);});allFixtures=out;}
+    catch(e){allFixtures={1:[],2:[],3:[]};}
+    renderFixtures();
+  }
+  async function loadStandings(){try{const d=await sbFrom('standings','?select=*&order=pts.desc,gd.desc');renderStandings(d);}catch(e){renderStandings([]);}}
+  async function loadTeams(){try{const d=await sbFrom('teams','?select=*&order=name.asc');renderTeams(d);}catch(e){renderTeams([]);}}
+  async function loadOC(){try{const d=await sbFrom('oc_members','?select=*&order=role.asc,name.asc');renderOC(d);}catch(e){renderOC([]);}}
 
-  /* ── INIT: show fallback instantly, fetch live in parallel ── */
-  renderFixtures(); renderStandings(FALLBACK_STANDINGS); renderTeams(FALLBACK_TEAMS); renderOC(FALLBACK_OC);
+  /* ── INIT ── */
+  renderFixtures(); renderStandings([]); renderTeams([]); renderOC([]);
   loadFixtures(); loadStandings(); loadTeams(); loadOC();
-  /* poll every 30s — empty DB auto-reverts to fallback */
   setInterval(()=>{loadFixtures();loadStandings();loadTeams();loadOC();},30000);
 </script>
 </body>

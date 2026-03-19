@@ -700,9 +700,12 @@ document.getElementById('add-oc-btn')?.addEventListener('click',()=>{
   openModal('Add OC Member',`
     <div class="form-group" style="margin-bottom:12px"><label>Name</label><input id="oc-name" placeholder="Full name"/></div>
     <div class="form-group" style="margin-bottom:12px"><label>Role</label><select id="oc-role">
-      <option>Tournament Director</option><option>Operations & Logistics</option>
-      <option>Finance & Sponsorship</option><option>Media & Promotions</option>
-      <option>Umpiring & Technical</option><option>Player Welfare</option>
+      <option>Director</option>
+      <option>Scoring and Tech</option>
+      <option>Inclusivity and Player Welfare</option>
+      <option>Finance and Sponsorships</option>
+      <option>Operations and Logistics</option>
+      <option>Media, Marketing and Design</option>
     </select></div>
     <div class="form-group"><label>Department</label><input id="oc-dept" placeholder="e.g. Leadership"/></div>`,
   async()=>{
@@ -719,7 +722,7 @@ async function editOC(id){
   openModal('Edit Member',`
     <div class="form-group" style="margin-bottom:12px"><label>Name</label><input id="oc-name" value="${m.name}"/></div>
     <div class="form-group" style="margin-bottom:12px"><label>Role</label><select id="oc-role">
-      ${['Director','Scoring and Tech','Inclusivity and Player Welfare','Finance and Sponsorships','Operations and Logistics','Media, Marketing and Design'].map(r=>`<option${r===m.role?' selected':''}>${r}</option>`).join('')}
+      ${['Tournament Director','Operations & Logistics','Finance & Sponsorship','Media & Promotions','Umpiring & Technical','Player Welfare'].map(r=>`<option${r===m.role?' selected':''}>${r}</option>`).join('')}
     </select></div>
     <div class="form-group"><label>Department</label><input id="oc-dept" value="${m.department}"/></div>`,
   async()=>{

@@ -252,9 +252,46 @@
   const SUPABASE_URL  = 'https://ypkzlblmaeuhbfvqswvo.supabase.co';
   const SUPABASE_ANON = 'sb_publishable_uF5S1z-SR5-rRt3AVCliGA_RDug3t9j';
   async function sbFrom(table, query=''){
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`,{headers:{apikey:SUPABASE_ANON,Authorization:`Bearer ${SUPABASE_ANON}`,'Content-Type':'application/json'}});
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/${table}${query}`,{headers:{apikey:SUPABASE_ANON,'Content-Type':'application/json'}});
     if(!r.ok) throw new Error(table);
     return r.json();
+  }
+
+  /* ── PHASE LABELS ── */
+  const PHASE_LABELS = {
+    '1h':'1st Half','ht':'Half Time','2h':'2nd Half',
+    'et1':'ET 1st','et2':'ET 2nd','pen':'Penalties','ft':'FT'
+  };
+  const PHASE_MAX = {'1h':45,'2h':90,'et1':105,'et2':120};
+
+  /* ── LIVE CLOCK ── */
+  // Tracks { fixtureId -> { fetchedAt, elapsed, phase } }
+  let liveClocks = {};
+  let clockTicker = null;
+
+  function startClockTicker() {
+    if (clockTicker) return;
+    clockTicker = setInterval(tickClocks, 1000);
+  }
+
+  function tickClocks() {
+    Object.entries(liveClocks).forEach(([id, c]) => {
+      const el = document.getElementById(`live-clock-${id}`);
+      if (!el) return;
+      const secondsSinceFetch = Math.floor((Date.now() - c.fetchedAt) / 1000);
+      const total = c.elapsed + secondsSinceFetch;
+      el.textContent = formatLiveClock(total, c.phase);
+    });
+  }
+
+  function formatLiveClock(totalSec, phase) {
+    if (phase === 'ht')  return 'HT';
+    if (phase === 'pen') return 'PEN';
+    const m = Math.floor(totalSec / 60);
+    const s = String(Math.floor(totalSec % 60)).padStart(2,'0');
+    const max = PHASE_MAX[phase];
+    if (max && m >= max) return `${max}+${m - max + 1}'`;
+    return `${String(m).padStart(2,'0')}:${s}`;
   }
 
 
@@ -285,13 +322,28 @@
     const fl=document.getElementById('fixtures-list'); fl.innerHTML='';
     const src=(allFixtures[currentDay]||[]);
     if(!src.length){fl.innerHTML='<p style="color:var(--muted);font-size:14px;padding:0.5rem 0">No fixtures scheduled for this day yet.</p>';return;}
+    liveClocks={};
     src.forEach(f=>{
       const home=f.home??f.home_team, away=f.away??f.away_team, time=f.time??f.match_time;
-      const score=f.score??((f.status==='done'||f.status==='live')?`${f.home_score??0}-${f.away_score??0}`:'—');
-      const bc=f.status==='live'?'badge-live':f.status==='done'?'badge-done':'badge-up';
-      const bt=f.status==='live'?'LIVE':f.status==='done'?'FT':'Upcoming';
-      fl.innerHTML+=`<div class="fixture-card"><div class="team-name">${home}</div><div><div class="score-box"><div class="score-val">${score}</div><div class="score-time">${time}</div></div><div class="fixture-meta"><span class="badge ${bc}">${bt}</span></div></div><div class="team-name right">${away}</div></div>`;
+      const isLive = f.status==='live';
+      const score=(f.status==='done'||isLive)?`${f.home_score??0}–${f.away_score??0}`:'—';
+      const bc=isLive?'badge-live':f.status==='done'?'badge-done':'badge-up';
+
+      let badgeHTML;
+      if(isLive && f.match_phase && f.match_phase!=='ft'){
+        // register clock
+        liveClocks[f.id]={fetchedAt:Date.now(),elapsed:f.elapsed_time||0,phase:f.match_phase};
+        const phaseLabel=PHASE_LABELS[f.match_phase]||'Live';
+        const initClock=formatLiveClock(f.elapsed_time||0,f.match_phase);
+        badgeHTML=`<span class="badge badge-live">${phaseLabel}</span> <span id="live-clock-${f.id}" style="font-family:'Bebas Neue',sans-serif;font-size:13px;color:#c0392b;letter-spacing:0.5px;">${initClock}</span>`;
+      } else {
+        const bt=isLive?'LIVE':f.status==='done'?'FT':'Upcoming';
+        badgeHTML=`<span class="badge ${bc}">${bt}</span>`;
+      }
+
+      fl.innerHTML+=`<div class="fixture-card"><div class="team-name">${home}</div><div><div class="score-box"><div class="score-val">${score}</div><div class="score-time">${time}</div></div><div class="fixture-meta">${badgeHTML}</div></div><div class="team-name right">${away}</div></div>`;
     });
+    if(Object.keys(liveClocks).length) startClockTicker();
   }
   function showDay(d,btn){currentDay=d;document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderFixtures();}
 

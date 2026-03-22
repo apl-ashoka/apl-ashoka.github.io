@@ -131,6 +131,53 @@
     /* ROLE LOCK */
     .director-only{display:none;}
 
+    /* MATCH TIMER */
+    .timer-card{background:var(--pitch);border-radius:12px;padding:2rem;color:white;text-align:center;margin-bottom:1rem;}
+    .timer-match-name{font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:1px;text-transform:uppercase;margin-bottom:0.5rem;}
+    .timer-score-display{font-family:'Bebas Neue',sans-serif;font-size:52px;letter-spacing:4px;line-height:1;color:white;margin-bottom:0.5rem;}
+    .timer-clock{font-family:'Bebas Neue',sans-serif;font-size:72px;letter-spacing:2px;line-height:1;color:var(--gold);margin-bottom:0.25rem;}
+    .timer-phase-label{font-size:12px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:1.5rem;min-height:18px;}
+    .timer-phase-label.blink{animation:phase-blink 1s ease-in-out infinite;}
+    @keyframes phase-blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    .timer-controls{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;}
+    .timer-btn{padding:8px 18px;border-radius:7px;font-size:12px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;border:none;transition:all 0.15s;letter-spacing:0.3px;}
+    .tbtn-start{background:var(--green-mid);color:white;}
+    .tbtn-start:hover{background:var(--green);}
+    .tbtn-pause{background:#b7860b;color:white;}
+    .tbtn-pause:hover{background:#94690a;}
+    .tbtn-halftime{background:rgba(255,255,255,0.12);color:white;border:1px solid rgba(255,255,255,0.2);}
+    .tbtn-halftime:hover{background:rgba(255,255,255,0.2);}
+    .tbtn-second{background:var(--green-mid);color:white;}
+    .tbtn-second:hover{background:var(--green);}
+    .tbtn-et1{background:rgba(212,160,23,0.3);color:var(--gold);border:1px solid rgba(212,160,23,0.4);}
+    .tbtn-et1:hover{background:rgba(212,160,23,0.5);}
+    .tbtn-et2{background:rgba(212,160,23,0.3);color:var(--gold);border:1px solid rgba(212,160,23,0.4);}
+    .tbtn-et2:hover{background:rgba(212,160,23,0.5);}
+    .tbtn-penalties{background:rgba(192,57,43,0.3);color:#ff8a7a;border:1px solid rgba(192,57,43,0.4);}
+    .tbtn-penalties:hover{background:rgba(192,57,43,0.5);}
+    .tbtn-fulltime{background:var(--red);color:white;}
+    .tbtn-fulltime:hover{opacity:0.88;}
+    .tbtn-reset{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);border:1px solid rgba(255,255,255,0.1);}
+    .tbtn-reset:hover{background:rgba(255,255,255,0.15);color:white;}
+    .timer-btn:disabled{opacity:0.3;cursor:not-allowed;}
+    .timer-phase-progress{display:flex;gap:4px;justify-content:center;margin-bottom:1.5rem;}
+    .phase-pip{width:28px;height:4px;border-radius:2px;background:rgba(255,255,255,0.15);transition:background 0.3s;}
+    .phase-pip.done{background:var(--green-mid);}
+    .phase-pip.active{background:var(--gold);}
+    .timer-inline{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:3px 10px;border-radius:4px;background:#fdecea;color:var(--red);}
+    .timer-inline svg{flex-shrink:0;}
+    .no-live{text-align:center;padding:3rem;color:rgba(255,255,255,0.4);font-size:14px;}
+    .live-fixture-pick{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:1rem 1.25rem;margin-bottom:8px;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:space-between;}
+    .live-fixture-pick:hover{background:rgba(255,255,255,0.12);border-color:var(--gold);}
+    .lfp-name{font-size:14px;font-weight:500;color:white;}
+    .lfp-time{font-size:12px;color:rgba(255,255,255,0.45);}
+    .score-input-row{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:1.5rem;}
+    .score-inp{width:60px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:8px;font-family:'Bebas Neue',sans-serif;font-size:28px;color:white;text-align:center;outline:none;}
+    .score-inp:focus{border-color:var(--gold);}
+    .score-vs{font-size:14px;color:rgba(255,255,255,0.4);}
+    .score-save-btn{background:var(--green-mid);color:white;border:none;border-radius:6px;padding:6px 14px;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:500;cursor:pointer;}
+    .score-save-btn:hover{background:var(--green);}
+
     /* RESPONSIVE */
     @media(max-width:768px){
       .sidebar{transform:translateX(-100%);transition:transform 0.2s;}
@@ -193,6 +240,11 @@
         <a data-panel="oc" class="director-only">
           <svg class="nav-icon" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3" stroke="currentColor" stroke-width="1.5"/><path d="M2 14c0-2.5 2.5-4.5 6-4.5s6 2 6 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           OC Roster
+        </a>
+        <div class="sidebar-section-label">Live</div>
+        <a data-panel="timer">
+          <svg class="nav-icon" fill="none" viewBox="0 0 16 16"><circle cx="8" cy="9" r="5.5" stroke="currentColor" stroke-width="1.5"/><path d="M8 6v3l2 1.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 1h4M8 1v2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          Match Timer
         </a>
       </nav>
       <div class="sidebar-footer">
@@ -285,11 +337,51 @@
         </div>
       </div>
 
+      <!-- MATCH TIMER -->
+      <div class="panel" id="panel-timer">
+        <!-- fixture picker shown when no match is active -->
+        <div id="timer-picker">
+          <div class="timer-card">
+            <div class="no-live" id="timer-no-live">Loading live fixtures…</div>
+            <div id="timer-fixture-list"></div>
+          </div>
+        </div>
+        <!-- active timer shown when a match is selected -->
+        <div id="timer-active" style="display:none;">
+          <div class="timer-card">
+            <div class="timer-match-name" id="t-match-name">—</div>
+            <!-- phase progress pips -->
+            <div class="timer-phase-progress">
+              <div class="phase-pip" id="pip-1h"></div>
+              <div class="phase-pip" id="pip-ht"></div>
+              <div class="phase-pip" id="pip-2h"></div>
+              <div class="phase-pip" id="pip-et1"></div>
+              <div class="phase-pip" id="pip-et2"></div>
+              <div class="phase-pip" id="pip-pen"></div>
+            </div>
+            <div class="timer-phase-label" id="t-phase-label">1st Half</div>
+            <div class="timer-clock" id="t-clock">00:00</div>
+            <!-- score inputs -->
+            <div class="score-input-row">
+              <input class="score-inp" type="number" id="t-home-score" min="0" value="0"/>
+              <span class="score-vs" id="t-teams-label">0 – 0</span>
+              <input class="score-inp" type="number" id="t-away-score" min="0" value="0"/>
+            </div>
+            <div style="margin-bottom:1rem;">
+              <button class="score-save-btn" onclick="saveTimerScore()">Save Score</button>
+            </div>
+            <!-- controls -->
+            <div class="timer-controls" id="t-controls"></div>
+            <div style="margin-top:0.5rem;">
+              <button class="timer-btn tbtn-reset" onclick="resetTimer()">← Back to fixture list</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
-
-<!-- MODALS -->
 <div class="modal-overlay" id="modal-overlay" style="display:none;">
   <div class="modal" id="modal-box">
     <h3 id="modal-title">Add Fixture</h3>
@@ -383,6 +475,7 @@ const panels={
   standings:{title:'Standings',desc:'Edit group stage table'},
   teams:{title:'Teams',desc:'Manage participating teams'},
   oc:{title:'OC Roster',desc:'Manage organizing committee members'},
+  timer:{title:'Match Timer',desc:'Live football clock for ongoing matches'},
 };
 document.querySelectorAll('.sidebar-nav a[data-panel]').forEach(a=>{
   a.addEventListener('click',()=>{
@@ -393,6 +486,7 @@ document.querySelectorAll('.sidebar-nav a[data-panel]').forEach(a=>{
     document.getElementById(`panel-${id}`).classList.add('active');
     document.getElementById('panel-title').textContent=panels[id].title;
     document.getElementById('panel-desc').textContent=panels[id].desc;
+    if(id==='timer') loadTimerPicker();
   });
 });
 
@@ -738,6 +832,258 @@ async function deleteOC(id){
   try{await sb.delete('oc_members',{id});toast('Member removed');loadOCAdmin();}
   catch(e){toast('Error removing member','error');}
 }
-</script>
-</body>
-</html>
+/* ══════════════════════════════════════════════════════
+   MATCH TIMER
+   Phases: 1h (0–45), ht (halftime break), 2h (45–90),
+           et1 (90–105), et2 (105–120), pen (penalties)
+   Saves elapsed_time + match_phase to fixtures table.
+══════════════════════════════════════════════════════ */
+
+const PHASES = [
+  { id:'1h',  label:'1st Half',           max:45,  pip:'pip-1h'  },
+  { id:'ht',  label:'Half Time',          max:null,pip:'pip-ht'  },
+  { id:'2h',  label:'2nd Half',           max:90,  pip:'pip-2h'  },
+  { id:'et1', label:'Extra Time — 1st',   max:105, pip:'pip-et1' },
+  { id:'et2', label:'Extra Time — 2nd',   max:120, pip:'pip-et2' },
+  { id:'pen', label:'Penalties',          max:null,pip:'pip-pen' },
+];
+
+let timerFixture   = null;   // current fixture object
+let timerPhaseIdx  = 0;      // index into PHASES
+let timerElapsed   = 0;      // seconds elapsed in current phase
+let timerBaseTime  = 0;      // epoch ms when timer was last started
+let timerRunning   = false;
+let timerInterval  = null;
+let timerAddedTime = 0;      // injury/added time seconds
+
+/* ── PICKER ── */
+async function loadTimerPicker() {
+  const noLive = document.getElementById('timer-no-live');
+  const list   = document.getElementById('timer-fixture-list');
+  noLive.textContent = 'Loading…';
+  list.innerHTML = '';
+  try {
+    const fixtures = await sb.from('fixtures', '?select=*&or=(status.eq.live,status.eq.upcoming)&order=day.asc,match_time.asc');
+    if (!fixtures.length) {
+      noLive.textContent = 'No live or upcoming fixtures. Set a fixture to Live first.';
+      return;
+    }
+    noLive.textContent = 'Select a match to manage its clock:';
+    list.innerHTML = fixtures.map(f => {
+      const phase = f.match_phase ? PHASES.find(p=>p.id===f.match_phase)?.label || '' : '';
+      const elapsed = f.elapsed_time ? formatClock(f.elapsed_time) : '';
+      const info = phase ? `${phase}${elapsed ? ' · '+elapsed : ''}` : f.match_time;
+      return `<div class="live-fixture-pick" onclick="selectTimerFixture(${f.id})">
+        <span class="lfp-name">${f.home_team} vs ${f.away_team}</span>
+        <span class="lfp-time">Day ${f.day} · ${info}</span>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    noLive.textContent = 'Could not load fixtures.';
+  }
+}
+
+async function selectTimerFixture(id) {
+  try {
+    const rows = await sb.from('fixtures', `?id=eq.${id}`);
+    timerFixture = rows[0];
+    if (!timerFixture) return;
+
+    // restore state if already in progress
+    timerPhaseIdx = Math.max(0, PHASES.findIndex(p => p.id === timerFixture.match_phase));
+    if (timerPhaseIdx < 0) timerPhaseIdx = 0;
+    timerElapsed  = timerFixture.elapsed_time || 0;
+    timerRunning  = false;
+    timerAddedTime = 0;
+
+    document.getElementById('timer-picker').style.display = 'none';
+    document.getElementById('timer-active').style.display = 'block';
+    document.getElementById('t-match-name').textContent =
+      `${timerFixture.home_team} vs ${timerFixture.away_team} · Day ${timerFixture.day}`;
+
+    document.getElementById('t-home-score').value = timerFixture.home_score ?? 0;
+    document.getElementById('t-away-score').value = timerFixture.away_score ?? 0;
+    document.getElementById('t-teams-label').textContent =
+      `${timerFixture.home_team}  –  ${timerFixture.away_team}`;
+
+    updateTimerUI();
+  } catch(e) { toast('Could not load fixture','error'); }
+}
+
+/* ── CLOCK FORMAT ── */
+function formatClock(totalSeconds) {
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+/* ── DISPLAY CLOCK ── */
+function getDisplayMinute() {
+  const phase = PHASES[timerPhaseIdx];
+  const totalSec = timerElapsed + (timerRunning ? Math.floor((Date.now() - timerBaseTime) / 1000) : 0);
+  const totalMin = Math.floor(totalSec / 60);
+  // show added time as e.g. 45+2
+  if (phase.max && totalMin >= phase.max) {
+    const over = totalMin - phase.max + 1;
+    return `${phase.max}+${over}`;
+  }
+  return String(totalMin).padStart(2,'0') + ':' + String(Math.floor(totalSec % 60)).padStart(2,'0');
+}
+
+/* ── TICK ── */
+function timerTick() {
+  document.getElementById('t-clock').textContent = getDisplayMinute();
+}
+
+/* ── CONTROLS ── */
+function buildControls() {
+  const phase = PHASES[timerPhaseIdx];
+  const ctrl  = document.getElementById('t-controls');
+  ctrl.innerHTML = '';
+
+  const btn = (label, cls, fn, disabled=false) => {
+    const b = document.createElement('button');
+    b.className = `timer-btn ${cls}`;
+    b.textContent = label;
+    b.disabled = disabled;
+    b.onclick = fn;
+    ctrl.appendChild(b);
+  };
+
+  if (phase.id === 'ht') {
+    // halftime break — just a "Start 2nd Half" button
+    btn('▶ Start 2nd Half', 'tbtn-second', () => advancePhase());
+  } else if (phase.id === 'pen') {
+    // penalties — no clock, just record
+    btn('End Penalties / FT', 'tbtn-fulltime', () => endMatch());
+  } else {
+    if (!timerRunning) {
+      btn('▶ Start', 'tbtn-start', () => startTimer());
+    } else {
+      btn('⏸ Pause', 'tbtn-pause', () => pauseTimer());
+    }
+    // next phase button
+    const nextPhase = PHASES[timerPhaseIdx + 1];
+    if (nextPhase) {
+      const nextLabel = nextPhase.id === 'ht' ? '⏱ Halftime'
+        : nextPhase.id === '2h'  ? '▶ Start 2nd Half'
+        : nextPhase.id === 'et1' ? '+ Extra Time 1st'
+        : nextPhase.id === 'et2' ? '+ Extra Time 2nd'
+        : nextPhase.id === 'pen' ? '⚽ Penalties'
+        : 'Next Phase';
+      const nextCls = nextPhase.id === 'ht' ? 'tbtn-halftime'
+        : nextPhase.id === 'et1' || nextPhase.id === 'et2' ? 'tbtn-et1'
+        : nextPhase.id === 'pen' ? 'tbtn-penalties'
+        : 'tbtn-second';
+      btn(nextLabel, nextCls, () => advancePhase());
+    }
+    btn('🏁 Full Time', 'tbtn-fulltime', () => endMatch());
+  }
+}
+
+function updateTimerUI() {
+  const phase = PHASES[timerPhaseIdx];
+  const label = document.getElementById('t-phase-label');
+  label.textContent = phase.label;
+
+  // blink during halftime/penalties
+  label.classList.toggle('blink', phase.id === 'ht' || phase.id === 'pen');
+
+  // pips
+  PHASES.forEach((p, i) => {
+    const pip = document.getElementById(p.pip);
+    pip.classList.remove('done','active');
+    if (i < timerPhaseIdx)       pip.classList.add('done');
+    else if (i === timerPhaseIdx) pip.classList.add('active');
+  });
+
+  // clock display
+  if (phase.id === 'ht')  document.getElementById('t-clock').textContent = 'HT';
+  else if (phase.id === 'pen') document.getElementById('t-clock').textContent = 'PEN';
+  else timerTick();
+
+  buildControls();
+}
+
+function startTimer() {
+  if (timerRunning) return;
+  timerRunning  = true;
+  timerBaseTime = Date.now();
+  timerInterval = setInterval(() => {
+    timerTick();
+    // auto-persist every 30s
+    if (Math.floor((Date.now() - timerBaseTime) / 1000) % 30 === 0) persistTimer();
+  }, 1000);
+  buildControls();
+}
+
+function pauseTimer() {
+  if (!timerRunning) return;
+  timerElapsed += Math.floor((Date.now() - timerBaseTime) / 1000);
+  timerRunning  = false;
+  clearInterval(timerInterval);
+  persistTimer();
+  buildControls();
+}
+
+function advancePhase() {
+  if (timerRunning) {
+    timerElapsed += Math.floor((Date.now() - timerBaseTime) / 1000);
+    timerRunning = false;
+    clearInterval(timerInterval);
+  }
+  timerElapsed = 0;
+  timerPhaseIdx = Math.min(timerPhaseIdx + 1, PHASES.length - 1);
+  persistTimer();
+  updateTimerUI();
+}
+
+async function endMatch() {
+  if (timerRunning) pauseTimer();
+  try {
+    await sb.update('fixtures', {id: timerFixture.id}, {
+      status: 'done',
+      match_phase: 'ft',
+      elapsed_time: 0,
+    });
+    toast('Match ended — marked Full Time');
+    loadFixturesAdmin();
+    loadDashboard();
+    resetTimer();
+  } catch(e) { toast('Error ending match','error'); }
+}
+
+async function saveTimerScore() {
+  const hs = parseInt(document.getElementById('t-home-score').value) || 0;
+  const as = parseInt(document.getElementById('t-away-score').value) || 0;
+  try {
+    await sb.update('fixtures', {id: timerFixture.id}, {
+      home_score: hs,
+      away_score: as,
+    });
+    timerFixture.home_score = hs;
+    timerFixture.away_score = as;
+    toast('Score saved');
+  } catch(e) { toast('Error saving score','error'); }
+}
+
+async function persistTimer() {
+  if (!timerFixture) return;
+  try {
+    const totalElapsed = timerElapsed + (timerRunning ? Math.floor((Date.now() - timerBaseTime)/1000) : 0);
+    await sb.update('fixtures', {id: timerFixture.id}, {
+      match_phase:  PHASES[timerPhaseIdx].id,
+      elapsed_time: totalElapsed,
+      status:       'live',
+    });
+  } catch(e) { /* silent */ }
+}
+
+function resetTimer() {
+  if (timerRunning) { timerRunning=false; clearInterval(timerInterval); }
+  timerFixture=null; timerPhaseIdx=0; timerElapsed=0; timerRunning=false;
+  document.getElementById('timer-active').style.display='none';
+  document.getElementById('timer-picker').style.display='block';
+  loadTimerPicker();
+}
+
